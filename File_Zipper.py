@@ -2,23 +2,26 @@ import os
 import shutil
 import zipfile
 import logging
-import sqlite3
+import psycopg2
+from urllib.parse import urlparse
 from dotenv import load_dotenv
-from datetime import datetime
 from telegram import Update, Bot
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters
+from telegram.ext import Updater, CommandHandler
 
-# Load environment variables 
+# Load environment variables
 load_dotenv()
+
+# Replace with the actual Heroku Postgres URL
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# Establish a connection
+conn = psycopg2.connect(DATABASE_URL, sslmode='require')
 
 # Get the bot token from environment variables
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 # Create the Updater instance with your bot token
 updater = Updater(BOT_TOKEN, use_context=True)
-
-# Replace with the path to your database file
-DATABASE_FILE = "your_database_file.db"
 
 # Define constants for storage limits
 MAX_STORAGE_PER_USER = 4 * 1024 * 1024 * 1024  # 4GB in bytes
@@ -28,11 +31,11 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 def get_user_storage(user_id):
-    """Retrieve user storage information from the database"""
+    """Retrieve user storage information from the PostgreSQL database"""
     try:
-        conn = sqlite3.connect("your_database_file.db")  # Replace with actual path
+        conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
-        cursor.execute("SELECT storage_used FROM users WHERE id = ?", (user_id,))
+        cursor.execute("SELECT storage_used FROM users WHERE id = %s", (user_id,))
         storage_usage = cursor.fetchone()[0]
         conn.close()
         return storage_usage
@@ -41,12 +44,12 @@ def get_user_storage(user_id):
         return None
 
 def retrieve_files_info(user_id):
-    """Retrieves file information from the database based on user_id"""
+    """Retrieves file information from the PostgreSQL database based on user_id"""
     try:
-        conn = sqlite3.connect("your_database_file.db")  # Replace with actual path
+        conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
 
-        query = "SELECT * FROM uploaded_files WHERE user_id = ?"
+        query = "SELECT * FROM uploaded_files WHERE user_id = %s"
         cursor.execute(query, (user_id,))
         files_info = cursor.fetchall()
 
@@ -57,12 +60,12 @@ def retrieve_files_info(user_id):
         return []
 
 def clear_database(user_id):
-    """Clears file information from the database based on user_id"""
+    """Clears file information from the PostgreSQL database based on user_id"""
     try:
-        conn = sqlite3.connect("your_database_file.db")  # Replace with actual path
+        conn = psycopg2.connect(DATABASE_URL)
         cursor = conn.cursor()
 
-        query = "DELETE FROM uploaded_files WHERE user_id = ?"
+        query = "DELETE FROM uploaded_files WHERE user_id = %s"
         cursor.execute(query, (user_id,))
 
         conn.commit()
