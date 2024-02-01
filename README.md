@@ -1,62 +1,92 @@
 ```markdown
-# File Zipper Bot
+# File Zipper Telegram Bot
 
-File Zipper Bot is a Telegram bot designed to help users manage and zip their files.
+File Zipper is a Telegram bot designed to help you manage and zip your files. The bot can handle multiple users concurrently, allowing them to upload files, queue for processing, and receive zipped files.
 
 ## Features
-- Download, zip, and send files to Telegram.
-- View active users and download queue.
-- Clear user's files and remove from the queue.
-- List user's files.
-- Delete a file by its list number.
+
+- **Concurrent Processing:** The bot can handle up to five users simultaneously, ensuring efficient file processing.
+
+- **File Zipping:** Users can upload files, and the bot will zip them upon request, sending the zipped file back to the user.
+
+- **Queue System:** If the bot is busy, users are placed in a queue and processed in the order they joined.
 
 ## Getting Started
+
 ### Prerequisites
-- Python 3.x
+
+- Python 3
 - PostgreSQL database
 
 ### Installation
+
 1. Clone the repository:
+
    ```bash
-   git clone https://github.com/your-username/file-zipper-bot.git
-   cd file-zipper-bot
+   git clone https://github.com/your-username/your-repository.git
+   cd your-repository
    ```
 
 2. Install dependencies:
+
    ```bash
    pip install -r requirements.txt
    ```
 
 3. Set up environment variables:
-   - Create a `.env` file in the project root and add the following variables:
-     ```
-     DB_USERNAME=your_db_username
-     DB_PASSWORD=your_db_password
-     DB_HOST=your_db_host
-     DB_PORT=your_db_port
-     DB_NAME=your_db_name
-     BOT_TOKEN=your_telegram_bot_token
-     ```
 
-4. Create and set up the PostgreSQL database:
-   - Run the SQL script in `database_setup.sql` to create the necessary tables.
+   Create a `.env` file in the root directory and add the following:
 
-5. Run the bot:
-   ```bash
-   python bot.py
+   ```env
+   DB_USERNAME="your_database_username"
+   DB_PASSWORD="your_database_password"
+   DB_HOST="your_database_host"
+   DB_PORT="your_database_port"
+   DB_NAME="your_database_name"
+   BOT_TOKEN="your_telegram_bot_token"
    ```
 
-## Usage
-- Start the bot by sending `/start`.
-- Use `/fzip <name>` to download, zip, and send files to Telegram.
-- Use `/showusers` to view active users and the download queue.
-- ... (other available commands)
+### Database Setup
+
+1. Create a PostgreSQL database and update the `.env` file with your database credentials.
+
+2. Run the following command to set up the database tables:
+
+   ```bash
+   python setup_database.py
+   ```
+
+### Running the Bot
+
+```bash
+python your_bot_script.py
+```
+
+### Usage
+
+- `/start`: Start the bot and receive a welcome message.
+
+- `/fzip <name>`: Upload files and request zipping. Replace `<name>` with the desired zip file name.
+
+- `/showusers`: View active users and download queue.
+
+- `/help`: Display a list of available commands.
+
+- `/clear`: Clear user's files and remove from the queue.
+
+- `/my_files`: List user's files.
+
+- `/del <file_number>`: Delete a file by its list number.
+
+- `/about`: Information about the bot.
 
 ## Contributing
-Contributions are welcome! If you have suggestions, bug reports, or want to contribute to the project, please open an issue or submit a pull request.
+
+Contributions are welcome! Feel free to open issues or submit pull requests.
 
 ## License
+
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
 
-Make sure to replace placeholders like `your-username`, `your_db_username`, `your_db_password`, etc., with your actual information.
+Make sure to replace placeholders like `your_database_username`, `your_database_password`, etc., with your actual credentials. 
