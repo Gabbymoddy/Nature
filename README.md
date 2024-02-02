@@ -23,8 +23,8 @@ File Zipper is a Telegram bot designed to help you manage and zip your files. Th
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/your-repository.git
-   cd your-repository
+   git clone [https://github.com/your-username/your-repository.git](https://github.com/Gabbymoddy/Nature.git)
+   cd File_Zipper
    ```
 
 2. Install dependencies:
